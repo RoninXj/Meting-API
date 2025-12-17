@@ -1,3 +1,4 @@
+import './polyfill.js'
 // 手动修复 Deno Buffer 兼容性问题
 import { Buffer } from 'node:buffer'
 
