@@ -11,7 +11,7 @@ const COOKIE_TTL = 1000 * 60 * 5 // 5分钟缓存过期
 const cookieDir = resolve(process.cwd(), 'cookie')
 let watcher = null
 
-async function startWatcher () {
+async function startWatcher() {
   try {
     watcher = watch(cookieDir)
     for await (const event of watcher) {
@@ -25,9 +25,9 @@ async function startWatcher () {
   }
 }
 
-// 启动监听（仅启动一次）
-if (!watcher) {
-  startWatcher().catch(() => {})
+// 启动监听（仅启动一次，Deno Deploy 环境下跳过）
+if (!watcher && typeof Deno === 'undefined') {
+  startWatcher().catch(() => { })
 }
 
 /**
@@ -35,7 +35,7 @@ if (!watcher) {
  * @param {string} server - 平台名称 (netease, tencent 等)
  * @returns {Promise<string>} cookie 字符串，失败时返回空字符串
  */
-export async function readCookieFile (server) {
+export async function readCookieFile(server) {
   const now = Date.now()
   const cached = cookieCache.get(server)
 
@@ -46,7 +46,7 @@ export async function readCookieFile (server) {
 
   // 优先从环境变量读取
   const envKey = `METING_COOKIE_${server.toUpperCase()}`
-  const envCookie = process.env[envKey]
+  const envCookie = typeof Deno !== 'undefined' ? Deno.env.get(envKey) : process.env[envKey]
   if (envCookie) {
     const value = envCookie.trim()
     // 更新缓存
@@ -85,7 +85,7 @@ export async function readCookieFile (server) {
  * @param {string} referrer - 请求的 referrer
  * @returns {boolean} 是否允许
  */
-export function isAllowedHost (referrer) {
+export function isAllowedHost(referrer) {
   if (config.meting.cookie.allowHosts.length === 0) return true
   if (!referrer) return false
 
