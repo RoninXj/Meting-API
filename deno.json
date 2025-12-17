@@ -1,0 +1,13 @@
+{
+    "tasks": {
+        "start": "deno serve --allow-read --allow-env src/deno_index.js"
+    },
+    "imports": {
+        "hono": "npm:hono@^4.10.7",
+        "hono/": "npm:hono@^4.10.7/",
+        "@meting/core": "npm:@meting/core@^1.6.0"
+    },
+    "compilerOptions": {
+        "strict": false
+    }
+}
