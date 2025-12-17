@@ -5,7 +5,7 @@
     "imports": {
         "hono": "npm:hono@^4.10.7",
         "hono/": "npm:hono@^4.10.7/",
-        "@meting/core": "https://esm.sh/@meting/core@1.6.0?target=deno"
+        "@meting/core": "https://esm.sh/@meting/core@1.6.0?target=deno&external=node:crypto,node:buffer,node:process"
     },
     "compilerOptions": {
         "strict": false
