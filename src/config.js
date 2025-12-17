@@ -12,23 +12,33 @@ const toNumber = (value, fallback) => {
   return Number.isNaN(parsed) ? fallback : parsed
 }
 
+const getEnv = (key) => {
+  if (typeof Deno !== 'undefined') {
+    return Deno.env.get(key)
+  }
+  if (typeof process !== 'undefined') {
+    return process.env[key]
+  }
+  return undefined
+}
+
 export default {
   http: {
-    prefix: process.env.HTTP_PREFIX || '',
-    port: toNumber(process.env.HTTP_PORT, 80)
+    prefix: getEnv('HTTP_PREFIX') || '',
+    port: toNumber(getEnv('HTTP_PORT'), 80)
   },
   https: {
-    enabled: toBoolean(process.env.HTTPS_ENABLED),
-    port: toNumber(process.env.HTTPS_PORT, 443),
-    keyPath: process.env.SSL_KEY_PATH || '',
-    certPath: process.env.SSL_CERT_PATH || ''
+    enabled: toBoolean(getEnv('HTTPS_ENABLED')),
+    port: toNumber(getEnv('HTTPS_PORT'), 443),
+    keyPath: getEnv('SSL_KEY_PATH') || '',
+    certPath: getEnv('SSL_CERT_PATH') || ''
   },
   meting: {
-    url: process.env.METING_URL || '',
-    token: process.env.METING_TOKEN || 'token',
+    url: getEnv('METING_URL') || '',
+    token: getEnv('METING_TOKEN') || 'token',
     cookie: {
-      allowHosts: process.env.METING_COOKIE_ALLOW_HOSTS
-        ? (process.env.METING_COOKIE_ALLOW_HOSTS).split(',').map(h => h.trim().toLowerCase())
+      allowHosts: getEnv('METING_COOKIE_ALLOW_HOSTS')
+        ? (getEnv('METING_COOKIE_ALLOW_HOSTS')).split(',').map(h => h.trim().toLowerCase())
         : []
     }
   }
