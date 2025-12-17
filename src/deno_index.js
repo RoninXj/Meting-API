@@ -1,3 +1,16 @@
+// 手动修复 Deno Buffer 兼容性问题
+import { Buffer } from 'node:buffer'
+
+// HACK: 强制让 Buffer 实例在 Deno 中被识别为 Uint8Array 的子类
+// 这是解决 Deno node:crypto 模块报错 "expected typed ArrayBufferView" 的关键
+const originalBufferFrom = Buffer.from
+Buffer.from = function (...args) {
+  const buf = originalBufferFrom.apply(this, args)
+  Object.setPrototypeOf(buf, Uint8Array.prototype)
+  return buf
+}
+globalThis.Buffer = Buffer
+
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 // 移除 Node 专用适配器
