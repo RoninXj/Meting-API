@@ -1,6 +1,12 @@
 import { Hono } from 'hono'
 import { cors } from 'hono/cors'
 // 移除 Node 专用适配器
+import { Buffer } from 'node:buffer'
+import process from 'node:process'
+
+globalThis.Buffer = Buffer
+globalThis.process = process
+
 // import { serve } from '@hono/node-server'
 // import { createServer } from 'node:https'
 // import { readFileSync } from 'node:fs'
