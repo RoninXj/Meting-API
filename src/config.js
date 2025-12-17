@@ -34,7 +34,7 @@ export default {
     certPath: getEnv('SSL_CERT_PATH') || ''
   },
   meting: {
-    url: getEnv('METING_URL') || '',
+    url: getEnv('METING_URL') || (typeof Deno !== 'undefined' ? 'DYNAMIC_HOST' : ''),
     token: getEnv('METING_TOKEN') || 'token',
     cookie: {
       allowHosts: getEnv('METING_COOKIE_ALLOW_HOSTS')
