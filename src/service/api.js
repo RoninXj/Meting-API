@@ -1,4 +1,4 @@
-import Meting from '@meting/core'
+// import Meting from '@meting/core' // Converted to dynamic import for Deno compatibility
 import hashjs from 'hash.js'
 import { HTTPException } from 'hono/http-exception'
 import config from '../config.js'
@@ -49,6 +49,7 @@ export default async (c) => {
   let data = cache.get(cacheKey)
   if (data === undefined) {
     c.header('x-cache', 'miss')
+    const { default: Meting } = await import('@meting/core')
     const meting = new Meting(server)
     meting.format(true)
 
