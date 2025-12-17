@@ -82,6 +82,12 @@ export default async (c) => {
   }
 
   // 5. 组装结果
+  let apiBase = config.meting.url
+  if (apiBase === 'DYNAMIC_HOST') {
+    const url = new URL(c.req.url)
+    apiBase = `${url.protocol}//${url.host}`
+  }
+
   if (type === 'url') {
     let url = data.url
     // 空结果返回 404
@@ -129,9 +135,9 @@ export default async (c) => {
     return {
       title: x.name,
       author: x.artist.join(' / '),
-      url: `${config.meting.url}/api?server=${server}&type=url&id=${x.url_id}&auth=${auth(server, 'url', x.url_id)}`,
-      pic: `${config.meting.url}/api?server=${server}&type=pic&id=${x.pic_id}&auth=${auth(server, 'pic', x.pic_id)}`,
-      lrc: `${config.meting.url}/api?server=${server}&type=lrc&id=${x.lyric_id}&auth=${auth(server, 'lrc', x.lyric_id)}`
+      url: `${apiBase}/api?server=${server}&type=url&id=${x.url_id}&auth=${auth(server, 'url', x.url_id)}`,
+      pic: `${apiBase}/api?server=${server}&type=pic&id=${x.pic_id}&auth=${auth(server, 'pic', x.pic_id)}`,
+      lrc: `${apiBase}/api?server=${server}&type=lrc&id=${x.lyric_id}&auth=${auth(server, 'lrc', x.lyric_id)}`
     }
   }))
 }
