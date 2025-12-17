@@ -66,7 +66,8 @@ export default async (c) => {
     try {
       response = await meting[method](id)
     } catch (error) {
-      throw new HTTPException(500, { message: '上游 API 调用失败' })
+      console.error('Meting API Error:', error)
+      throw new HTTPException(500, { message: `上游 API 调用失败: ${error.message}` })
     }
     try {
       data = JSON.parse(response)
